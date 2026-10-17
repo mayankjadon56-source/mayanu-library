@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MAYANU | Your Personal Library</title>
+
+<style>
+:root {
+  --bg:#090b10;
+  --panel:#151821;
+  --gold:#e8c17a;
+  --text:#f7f4ed;
+  --muted:#aab0bd;
+  --line:#303440;
+}
+
+* { box-sizing:border-box; }
+
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Georgia,serif;
+}
+
+header {
+  position:sticky;
+  top:0;
+  z-index:5;
+  background:#090b10f2;
+  border-bottom:1px solid var(--line);
+  padding:17px 6%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:15px;
+}
+
+.logo {
+  font:bold 27px Arial,sans-serif;
+  letter-spacing:5px;
+  color:var(--gold);
+}
+
+.logo span { color:white; }
+
+nav {
+  display:flex;
+  gap:18px;
+  flex-wrap:wrap;
+}
+
+nav a {
+  color:#ddd;
+  text-decoration:none;
+  font:12px Arial,sans-serif;
+}
+
+nav a:hover { color:var(--gold); }
+
+.hero {
+  padding:70px 7%;
+  background:radial-gradient(ellipse at 80% 20%,#58422230,transparent 55%);
+}
+
+.eyebrow {
+  font:11px Arial,sans-serif;
+  color:var(--gold);
+  letter-spacing:4px;
+}
+
+h1 {
+  font-size:clamp(40px,7vw,72px);
+  line-height:1.1;
+  font-weight:normal;
+  margin:20px 0;
+}
+
+h1 em { color:var(--gold); }
+
+.hero p {
+  color:var(--muted);
+  font:14px/1.8 Arial,sans-serif;
+  max-width:600px;
+}
+
+main { padding:30px 6% 65px; }
+
+.section { margin-bottom:45px; }
+
+h2 {
+  font-weight:normal;
+  font-size:30px;
+  margin:8px 0;
+}
+
+.subtitle {
+  color:var(--muted);
+  font:13px/1.7 Arial,sans-serif;
+}
+
+.controls {
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin:22px 0;
+}
+
+input,select {
+  background:var(--panel);
+  color:white;
+  border:1px solid var(--line);
+  padding:13px;
+  font:13px Arial,sans-serif;
+  border-radius:3px;
+}
+
+input { flex:1; min-width:180px; }
+
+button {
+  cursor:pointer;
+  font-family:Arial,sans-serif;
+}
+
+.btn {
+  background:var(--gold);
+  color:#17130b;
+  border:0;
+  padding:12px 16px;
+  font-weight:bold;
+  border-radius:3px;
+}
+
+.btn:hover { filter:brightness(1.1); }
+
+.secondary {
+  background:transparent;
+  color:var(--gold);
+  border:1px solid #75603d;
+  padding:10px 13px;
+}
+
+.grid {
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:15px;
+}
+
+.card {
+  background:var(--panel);
+  border:1px solid var(--line);
+  padding:12px;
+  min-width:0;
+}
+
+.card:hover { border-color:#9b7a45; }
+
+.cover {
+  aspect-ratio:3/4;
+  background:linear-gradient(145deg,#60472b,#1b202c);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:14px;
+  overflow:hidden;
+  position:relative;
+  border:1px solid #ffffff30;
+}
+
+.cover img {
+  position:absolute;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.cover span {
+  position:relative;
+  font-size:17px;
+  line-height:1.4;
+  overflow-wrap:anywhere;
+  text-shadow:0 2px 5px #000;
+}
+
+.card h3 {
+  font-size:16px;
+  line-height:1.4;
+}
+
+.author {
+  color:var(--muted);
+  font:12px/1.5 Arial,sans-serif;
+  min-height:32px;
+}
+
+.card .btn {
+  width:100%;
+  margin-top:10px;
+  padding:10px 5px;
+  font-size:12px;
+}
+
+.progress-track {
+  height:5px;
+  background:#343743;
+  margin-top:10px;
+}
+
+.progress-fill {
+  height:100%;
+  background:var(--gold);
+  width:0%;
+}
+
+.status {
+  color:var(--muted);
+  font:12px/1.7 Arial,sans-serif;
+  margin:15px 0;
+}
+
+.empty {
+  padding:25px;
+  border:1px dashed var(--line);
+  color:var(--muted);
+  font:13px/1.7 Arial,sans-serif;
+}
+
+footer {
+  border-top:1px solid var(--line);
+  padding:28px 6%;
+  color:var(--muted);
+  font:12px/1.8 Arial,sans-serif;
+}
+
+/* READER */
+
+.reader {
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#000e;
+  z-index:20;
+  padding:2vh 2vw;
+}
+
+.reader.open {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.reader-box {
+  width:min(1100px,100%);
+  height:96vh;
+  background:#f6efdf;
+  color:#29241d;
+  display:flex;
+  flex-direction:column;
+}
+
+.reader-head {
+  background:#151821;
+  color:white;
+  padding:12px;
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+
+.reader-head strong {
+  font:14px Arial,sans-serif;
+}
+
+.reader-tools {
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+}
+
+.reader-tools button {
+  padding:8px 10px;
+}
+
+.reader-body {
+  flex:1;
+  min-height:0;
+  position:relative;
+}
+
+#bookFrame {
+  width:100%;
+  height:100%;
+  border:0;
+  display:none;
+  background:#f6efdf;
+}
+
+.reader-message {
+  padding:25px;
+  font:14px/1.8 Arial,sans-serif;
+}
+
+.reader-foot {
+  background:#151821;
+  color:white;
+  padding:12px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  font:12px Arial,sans-serif;
+}
+
+.reader-foot button {
+  background:var(--gold);
+  border:0;
+  padding:9px 12px;
+}
+
+.reader-foot button:disabled {
+  opacity:.4;
+  cursor:not-allowed;
+}
+
+#readerProgress {
+  width:100%;
+  accent-color:var(--gold);
+}
+
+@media(max-width:1050px) {
+  .grid { grid-template-columns:repeat(4,minmax(0,1fr)); }
+}
+
+@media(max-width:760px) {
+  header { flex-direction:column; }
+  .grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .hero { padding:50px 6%; }
+  main { padding:25px 5%; }
+  h2 { font-size:26px; }
+}
+
+@media(max-width:360px) {
+  .grid { grid-template-columns:1fr; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <a href="#" style="text-decoration:none">
+    <div class="logo">MAYA<span>NU</span></div>
+  </a>
+
+  <nav>
+    <a href="#home">HOME</a>
+    <a href="#library">LIBRARY</a>
+    <a href="#bookshelf">MY BOOKSHELF</a>
+  </nav>
+</header>
+
+<section class="hero" id="home">
+  <div class="eyebrow">YOUR PERSONAL READING SPACE</div>
+
+  <h1>Read more.<br><em>Dream without limits.</em></h1>
+
+  <p>
+    Discover public-domain books, build your own bookshelf,
+    save bookmarks and continue reading where you left off.
+    Welcome to MAYANU.
+  </p>
+</section>
+
+<main>
+
+<section class="section" id="library">
+  <div class="eyebrow">DISCOVER STORIES</div>
+  <h2>Online Library</h2>
+  <div class="subtitle">
+    Search available books from the Project Gutenberg catalogue.
+  </div>
+
+  <form class="controls" id="searchForm">
+    <input id="query" placeholder="Search title or author...">
+
+    <select id="topic">
+      <option value="">All subjects</option>
+      <option value="romance">Romance</option>
+      <option value="mystery">Mystery</option>
+      <option value="fantasy">Fantasy</option>
+      <option value="adventure">Adventure</option>
+      <option value="science fiction">Science Fiction</option>
+      <option value="horror">Horror</option>
+      <option value="poetry">Poetry</option>
+    </select>
+
+    <button class="btn" type="submit">Search</button>
+  </form>
+
+  <div class="status" id="status">Connecting to library...</div>
+  <div class="grid" id="grid"></div>
+
+  <div class="controls">
+    <button class="btn secondary" id="previousPage" disabled>← Previous</button>
+    <span class="status" id="pageLabel">Page 1</span>
+    <button class="btn secondary" id="nextPage">Next →</button>
+  </div>
+</section>
+
+<section class="section" id="bookshelf">
+  <div class="eyebrow">YOUR COLLECTION</div>
+  <h2>My Bookshelf ♥</h2>
+  <div class="subtitle">
+    Books you save appear here. Your saved collection is stored in this browser.
+  </div>
+
+  <div class="status" id="shelfStatus"></div>
+  <div class="grid" id="shelfGrid"></div>
+</section>
+
+<section class="section">
+  <div class="eyebrow">PICK UP WHERE YOU LEFT OFF</div>
+  <h2>Continue Reading</h2>
+  <div class="subtitle">
+    Your recent reading positions are saved automatically when possible.
+  </div>
+  <div class="status" id="continueStatus"></div>
+  <div class="grid" id="continueGrid"></div>
+</section>
+
+</main>
+
+<footer>
+  <div class="logo" style="font-size:21px">MAYANU</div>
+  <div>
+    Free public-domain book discovery.<br>
+    Book availability and rights vary by edition and country.
+  </div>
+</footer>
+
+<div class="reader" id="reader" role="dialog" aria-modal="true">
+  <div class="reader-box">
+
+    <div class="reader-head">
+      <strong id="readerTitle">MAYANU Reader</strong>
+
+      <div class="reader-tools">
+        <button class="secondary" id="fontDown">A−</button>
+        <button class="secondary" id="fontUp">A+</button>
+        <button class="secondary" id="bookmarkBtn">🔖 Bookmark</button>
+        <button class="secondary" id="closeReader">Close ×</button>
+      </div>
+    </div>
+
+    <div class="reader-body">
+      <div class="reader-message" id="readerMessage">
+        Loading book...
+      </div>
+      <iframe id="bookFrame" title="Book text"></iframe>
+    </div>
+
+    <div class="reader-foot">
+      <button id="previousChapter" disabled>← Previous chapter</button>
+      <span id="chapterLabel">Reading book</span>
+      <button id="nextChapter" disabled>Next chapter →</button>
+
+      <label style="width:100%">
+        <div style="margin:8px 0">Reading position</div>
+        <input type="range" id="readerProgress" min="0" max="100" value="0">
+        <span id="progressLabel">0% saved</span>
+      </label>
+
+      <button id="jumpBookmark">Go to bookmark</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const API = "https://gutendex.com/books/";
+
+const $ = id => document.getElementById(id);
+
+let books = [];
+let nextUrl = API;
+let previousUrl = null;
+let pageNumber = 1;
+
+let currentBook = null;
+let currentBookUrl = "";
+let currentChapters = [];
+let chapterIndex = 0;
+let currentText = "";
+let currentFormat = "html";
+let saveTimer = null;
+let fontSize = 100;
+
+function loadStore(key, fallback) {
+  try {
+    const value = JSON.parse(localStorage.getItem(key));
+    return value ?? fallback;
+  } catch (e) {
+    return fallback;
+  }
+}
+
+function saveStore(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (e) {
+    $("status").textContent =
+      "Browser storage is unavailable. Saved data may not persist.";
+  }
+}
+
+let shelf = loadStore("mayanuShelfV2", []);
+let progressStore = loadStore("mayanuProgressV2", {});
+let bookmarks = loadStore("mayanuBookmarksV2", {});
+
+function esc(text) {
+  return String(text || "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;",
+    '"':"&quot;", "'":"&#39;"
+  })[c]);
+}
+
+function safeBookUrl(book) {
+  const formats = book.formats || {};
+  const keys = Object.keys(formats);
+
+  const candidates = [
+    formats["text/html; charset=utf-8"],
+    formats["text/html"],
+    ...keys.filter(k => /html/i.test(k)).map(k => formats[k]),
+    formats["text/plain; charset=utf-8"],
+    formats["text/plain"],
+    ...keys.filter(k => /text\/plain/i.test(k)).map(k => formats[k])
+  ];
+
+  for (const url of candidates) {
+    if (!url) continue;
+
+    try {
+      const parsed = new URL(url);
+
+      if (
+        parsed.protocol === "https:" &&
+        (
+          parsed.hostname === "gutenberg.org" ||
+          parsed.hostname.endsWith(".gutenberg.org")
+        )
+      ) {
+        return {
+          url: parsed.href,
+          format: /html/i.test(url) ? "html" : "text"
+        };
+      }
+    } catch (e) {}
+  }
+
+  return null;
+}
+
+function getAuthor(book) {
+  return (book.authors || []).map(a => a.name).join(", ") ||
+    "Unknown author";
+}
+
+function renderCard(book, destination, savedMode = false) {
+  const card = document.createElement("article");
+  card.className = "card";
+
+  const saved = shelf.some(b => b.id === book.id);
+  const reading = progressStore[book.id];
+  const percent = reading ? Math.round(reading.percent || 0) : 0;
+  const format = safeBookUrl(book);
+
+  card.innerHTML = `
+    <div class="cover">
+      <span>${esc(book.title)}</span>
+    </div>
+    <h3>${esc(book.title)}</h3>
+    <div class="author">${esc(getAuthor(book))}</div>
+
+    ${reading ? `
+      <div class="progress-track">
+        <div class="progress-fill" style="width:${percent}%"></div>
+      </div>
+      <div class="status">${percent}% read</div>
+    ` : ""}
+
+    <button class="btn readBtn">
+      ${format ? "Read Now ↗" : "No readable text"}
+    </button>
+
+    <button class="btn secondary shelfBtn" style="width:100%;margin-top:7px">
+      ${saved ? "♥ Saved to Shelf" : "＋ Add to Bookshelf"}
+    </button>
+  `;
+
+  const imageUrl = book.formats?.["image/jpeg"];
+
+  if (imageUrl) {
+    const img = document.createElement("img");
+    img.src = imageUrl;
+    img.alt = "Cover of " + book.title;
+    img.loading = "lazy";
+    card.querySelector(".cover").appendChild(img);
+  }
+
+  const readButton = card.querySelector(".readBtn");
+
+  if (format) {
+    readButton.addEventListener("click", () => {
+      openBook(book, format.url, format.format);
+    });
+  } else {
+    readButton.disabled = true;
+    readButton.title = "This catalogue entry has no supported HTML or text format.";
+  }
+
+  card.querySelector(".shelfBtn").addEventListener("click", () => {
+    toggleShelf(book);
+  });
+
+  destination.appendChild(card);
+}
+
+function renderGrid(results) {
+  $("grid").innerHTML = "";
+
+  if (!results.length) {
+    $("grid").innerHTML =
+      '<div class="empty">No books found. Try another search.</div>';
+    return;
+  }
+
+  results.forEach(book => renderCard(book, $("grid")));
+}
+
+function renderShelf() {
+  $("shelfGrid").innerHTML = "";
+  $("shelfStatus").textContent = shelf.length + " saved books";
+
+  if (!shelf.length) {
+    $("shelfGrid").innerHTML =
+      '<div class="empty">Your bookshelf is empty. Add books from the library.</div>';
+    return;
+  }
+
+  shelf.forEach(book => renderCard(book, $("shelfGrid")));
+}
+
+function renderContinue() {
+  const entries = Object.entries(progressStore)
+    .filter(([id, data]) => data && data.percent > 0)
+    .sort((a, b) => (b[1].updated || 0) - (a[1].updated || 0))
+    .slice(0, 10);
+
+  $("continueGrid").innerHTML = "";
+
+  if (!entries.length) {
+    $("continueStatus").textContent = "No reading progress saved yet.";
+    return;
+  }
+
+  $("continueStatus").textContent = "Your latest reading sessions";
+
+  entries.forEach(([id, data]) => {
+    const book = shelf.find(b => String(b.id) === String(id)) ||
+      books.find(b => String(b.id) === String(id));
+
+    if (!book) return;
+
+    renderCard(book, $("continueGrid"));
+  });
+}
+
+function toggleShelf(book) {
+  const index = shelf.findIndex(b => b.id === book.id);
+
+  if (index >= 0) {
+    shelf.splice(index, 1);
+  } else {
+    shelf.unshift({
+      id: book.id,
+      title: book.title,
+      authors: book.authors || [],
+      formats: book.formats || {},
+      subjects: book.subjects || []
+    });
+  }
+
+  saveStore("mayanuShelfV2", shelf);
+  renderShelf();
+  renderContinue();
+
+  if (books.length) renderGrid(books);
+}
+
+async function loadBooks(url, page) {
+  $("status").textContent = "Loading live catalogue...";
+  $("grid").innerHTML = "";
+  $("previousPage").disabled = true;
+  $("nextPage").disabled = true;
+
+  try {
+    const response = await fetch(url);
+
+    if (!response.ok) throw new Error("Catalogue unavailable");
+
+    const data = await response.json();
+
+    books = data.results || [];
+    nextUrl = data.next;
+    previousUrl = data.previous;
+    pageNumber = page;
+
+    $("status").textContent =
+      "Found " + data.count.toLocaleString() +
+      " catalogue entries. Showing page " + pageNumber + ".";
+
+    $("pageLabel").textContent = "Page " + pageNumber;
+    $("previousPage").disabled = !previousUrl;
+    $("nextPage").disabled = !nextUrl;
+
+    renderGrid(books);
+  } catch (error) {
+    $("status").textContent =
+      "Could not connect. Check internet. If opening the HTML file directly fails, try a local web server.";
+    $("grid").innerHTML =
+      '<div class="empty">The live catalogue could not be loaded. Your saved bookshelf remains in this browser.</div>';
+  }
+}
+
+$("searchForm").addEventListener("submit", event => {
+  event.preventDefault();
+
+  const params = new URLSearchParams();
+  const query = $("query").value.trim();
+  const topic = $("topic").value;
+
+  if (query) params.set("search", query);
+  if (topic) params.set("topic", topic);
+
+  params.set("page", "1");
+
+  loadBooks(API + "?" + params.toString(), 1);
+});
+
+$("topic").addEventListener("change", () => {
+  $("searchForm").requestSubmit();
+});
+
+$("previousPage").addEventListener("click", () => {
+  if (previousUrl) loadBooks(previousUrl, Math.max(1, pageNumber - 1));
+});
+
+$("nextPage").addEventListener("click", () => {
+  if (nextUrl) loadBooks(nextUrl, pageNumber + 1);
+});
+
+function openBook(book, url, format) {
+  currentBook = book;
+  currentBookUrl = url;
+  currentFormat = format;
+  currentChapters = [];
+  chapterIndex = 0;
+  currentText = "";
+
+  $("readerTitle").textContent = book.title;
+  $("readerMessage").style.display = "block";
+  $("readerMessage").textContent = "Loading book...";
+  $("bookFrame").style.display = "none";
+  $("bookFrame").src = "about:blank";
+  $("reader").classList.add("open");
+
+  const saved = progressStore[book.id];
+
+  $("progressLabel").textContent =
+    saved ? Math.round(saved.percent) + "% saved" : "0% saved";
+
+  if (format === "html") {
+    openHtmlBook(url, saved);
+  } else {
+    openTextBook(url, saved);
+  }
+}
+
+function openHtmlBook(url, saved) {
+  const frame = $("bookFrame");
+
+  frame.onload = () => {
+    $("readerMessage").style.display = "none";
+    frame.style.display = "block";
+
+    try {
+      const doc = frame.contentDocument;
+
+      if (!doc || !doc.body) throw new Error("Reader not accessible");
+
+      prepareHtmlReader(doc, saved);
+    } catch (error) {
+      $("readerMessage").style.display = "block";
+      $("readerMessage").textContent =
+        "This edition could not be embedded by the browser. Try a different edition or open it from the catalogue.";
+    }
+  };
+
+  frame.src = url;
+}
+
+function prepareHtmlReader(doc, saved) {
+  doc.documentElement.style.background = "#f6efdf";
+  doc.body.style.background = "#f6efdf";
+  doc.body.style.color = "#29241d";
+  doc.body.style.maxWidth = "850px";
+  doc.body.style.margin = "35px auto";
+  doc.body.style.padding = "25px";
+  doc.body.style.lineHeight = "1.8";
+  doc.body.style.fontFamily = "Georgia, serif";
+  doc.body.style.fontSize = fontSize + "%";
+
+  const headings = Array.from(
+    doc.querySelectorAll("h1,h2,h3")
+  ).filter(el => (el.textContent || "").trim().length > 0);
+
+  currentChapters = headings.filter(el =>
+    /chapter|book [ivxlcdm0-9]+|part [ivxlcdm0-9]+|contents/i
+      .test(el.textContent)
+  );
+
+  if (!currentChapters.length) {
+    currentChapters = headings;
+  }
+
+  $("previousChapter").disabled = true;
+  $("nextChapter").disabled = currentChapters.length < 2;
+  $("chapterLabel").textContent = currentChapters.length
+    ? "Section 1 of " + currentChapters.length
+    : "Full text";
+
+  if (saved && saved.position) {
+    setTimeout(() => {
+      try {
+        const max = doc.documentElement.scrollHeight - doc.documentElement.clientHeight;
+        doc.documentElement.scrollTop = max * saved.position;
+      } catch (e) {}
+    }, 300);
+  }
+
+  doc.addEventListener("scroll", () => {
+    if (saveTimer) clearTimeout(saveTimer);
+    saveTimer = setTimeout(saveReadingPosition, 500);
+  }, true);
+
+  $("readerProgress").value = saved ? Math.round(saved.percent) : 0;
+}
+
+async function openTextBook(url, saved) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("Unable to fetch text");
+
+    currentText = await response.text();
+
+    const lines = currentText.split(/\r?\n/);
+    const chunkSize = 100;
+    currentChapters = [];
+
+    for (let i = 0; i < lines.length; i += chunkSize) {
+      currentChapters.push(lines.slice(i, i + chunkSize).join("\n"));
+    }
+
+    chapterIndex = saved && Number.isInteger(saved.chapter)
+      ? Math.min(saved.chapter, currentChapters.length - 1)
+      : 0;
+
+    renderTextChapter();
+  } catch (error) {
+    $("readerMessage").textContent =
+      "This text edition could not be loaded directly in the reader. The source may block browser requests. Try an HTML edition if available.";
+  }
+}
+
+function renderTextChapter() {
+  const text = currentChapters[chapterIndex] || "";
+  $("readerMessage").style.display = "block";
+  $("readerMessage").textContent = text;
+  $("readerMessage").style.whiteSpace = "pre-wrap";
+  $("readerMessage").style.fontSize = fontSize + "%";
+  $("bookFrame").style.display = "none";
+
+  $("chapterLabel").textContent =
+    "Section " + (chapterIndex + 1) + " of " + currentChapters.length;
+
+  $("previousChapter").disabled = chapterIndex <= 0;
+  $("nextChapter").disabled = chapterIndex >= currentChapters.length - 1;
+
+  const percent = currentChapters.length
+    ? Math.round((chapterIndex / currentChapters.length) * 100)
+    : 0;
+
+  $("readerProgress").value = percent;
+  $("progressLabel").textContent = percent + "% saved";
+
+  saveCurrentProgress({
+    percent,
+    chapter: chapterIndex,
+    position: 0
+  });
+}
+
+function saveCurrentProgress(extra = {}) {
+  if (!currentBook) return;
+
+  const previous = progressStore[currentBook.id] || {};
+
+  progressStore[currentBook.id] = {
+    ...previous,
+    ...extra,
+    title: currentBook.title,
+    updated: Date.now()
+  };
+
+  saveStore("mayanuProgressV2", progressStore);
+  renderContinue();
+}
+
+function saveReadingPosition() {
+  if (!currentBook) return;
+
+  if (currentFormat === "text") {
+    saveCurrentProgress({
+      chapter: chapterIndex,
+      percent: currentChapters.length
+        ? chapterIndex / currentChapters.length * 100
+        : 0
+    });
+    return;
+  }
+
+  try {
+    const doc = $("bookFrame").contentDocument;
+    if (!doc) return;
+
+    const max = doc.documentElement.scrollHeight -
+      doc.documentElement.clientHeight;
+
+    const position = max > 0
+      ? doc.documentElement.scrollTop / max
+      : 0;
+
+    const percent = Math.round(position * 100);
+
+    saveCurrentProgress({ position, percent });
+    $("readerProgress").value = percent;
+    $("progressLabel").textContent = percent + "% saved";
+  } catch (error) {}
+}
+
+$("previousChapter").addEventListener("click", () => {
+  if (currentFormat === "text" && chapterIndex > 0) {
+    chapterIndex--;
+    renderTextChapter();
+    return;
+  }
+
+  if (currentChapters.length && chapterIndex > 0) {
+    chapterIndex--;
+    currentChapters[chapterIndex].scrollIntoView();
+  }
+});
+
+$("nextChapter").addEventListener("click", () => {
+  if (currentFormat === "text" && chapterIndex < currentChapters.length - 1) {
+    chapterIndex++;
+    renderTextChapter();
+    return;
+  }
+
+  if (currentChapters.length && chapterIndex < currentChapters.length - 1) {
+    chapterIndex++;
+    currentChapters[chapterIndex].scrollIntoView();
+  }
+});
+
+$("bookmarkBtn").addEventListener("click", () => {
+  if (!currentBook) return;
+
+  let bookmark = { title: currentBook.title, savedAt: Date.now() };
+
+  if (currentFormat === "text") {
+    bookmark.chapter = chapterIndex;
+  } else {
+    try {
+      const doc = $("bookFrame").contentDocument;
+      const max = doc.documentElement.scrollHeight -
+        doc.documentElement.clientHeight;
+
+      bookmark.position = max > 0
+        ? doc.documentElement.scrollTop / max
+        : 0;
+    } catch (error) {
+      alert("This edition does not allow bookmark access in the browser.");
+      return;
+    }
+  }
+
+  bookmarks[currentBook.id] = bookmark;
+  saveStore("mayanuBookmarksV2", bookmarks);
+  $("bookmarkBtn").textContent = "✓ Bookmark saved";
+});
+
+$("jumpBookmark").addEventListener("click", () => {
+  if (!currentBook) return;
+
+  const bookmark = bookmarks[currentBook.id];
+
+  if (!bookmark) {
+    alert("No bookmark saved for this book yet.");
+    return;
+  }
+
+  if (currentFormat === "text") {
+    chapterIndex = Math.min(
+      bookmark.chapter || 0,
+      currentChapters.length - 1
+    );
+    renderTextChapter();
+  } else {
+    try {
+      const doc = $("bookFrame").contentDocument;
+      const max = doc.documentElement.scrollHeight -
+        doc.documentElement.clientHeight;
+
+      doc.documentElement.scrollTop = max * (bookmark.position || 0);
+      saveReadingPosition();
+    } catch (error) {
+      alert("This edition does not allow bookmark navigation.");
+    }
+  }
+});
+
+$("fontUp").addEventListener("click", () => {
+  fontSize = Math.min(180, fontSize + 10);
+  applyFontSize();
+});
+
+$("fontDown").addEventListener("click", () => {
+  fontSize = Math.max(70, fontSize - 10);
+  applyFontSize();
+});
+
+function applyFontSize() {
+  $("readerMessage").style.fontSize = fontSize + "%";
+
+  try {
+    $("bookFrame").contentDocument.body.style.fontSize = fontSize + "%";
+  } catch (error) {}
+}
+
+function closeReader() {
+  saveReadingPosition();
+  $("reader").classList.remove("open");
+  $("bookFrame").src = "about:blank";
+}
+
+$("closeReader").addEventListener("click", closeReader);
+
+$("reader").addEventListener("click", event => {
+  if (event.target.id === "reader") closeReader();
+});
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") closeReader();
+});
+
+$("readerProgress").addEventListener("change", event => {
+  if (!currentBook) return;
+
+  const position = Number(event.target.value) / 100;
+
+  if (currentFormat === "text") {
+    chapterIndex = Math.min(
+      currentChapters.length - 1,
+      Math.floor(position * currentChapters.length)
+    );
+    renderTextChapter();
+  } else {
+    try {
+      const doc = $("bookFrame").contentDocument;
+      const max = doc.documentElement.scrollHeight -
+        doc.documentElement.clientHeight;
+
+      doc.documentElement.scrollTop = max * position;
+      saveReadingPosition();
+    } catch (error) {}
+  }
+});
+
+renderShelf();
+renderContinue();
+loadBooks(API + "?page=1", 1);
+</script>
+
+</body>
+</html>
